@@ -25,6 +25,7 @@ package xyz.jpenilla.minimotd.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.EventTask;
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -44,6 +45,7 @@ import xyz.jpenilla.minimotd.common.config.MOTDConfig;
 
 @DefaultQualifier(NonNull.class)
 public final class PingListener {
+
   private final MiniMOTD<Favicon> miniMOTD;
   private final ProxyServer proxy;
 
@@ -53,7 +55,7 @@ public final class PingListener {
     this.proxy = proxy;
   }
 
-  @Subscribe
+  @Subscribe(priority = Short.MIN_VALUE, order = PostOrder.CUSTOM)
   public EventTask onProxyPingEvent(final ProxyPingEvent event) {
     return EventTask.async(() -> this.handle(event));
   }
